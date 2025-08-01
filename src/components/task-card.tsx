@@ -3,13 +3,15 @@ import { Task } from "@/lib/types";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, CheckCircle2, MessageSquareQuote, Play } from "lucide-react";
+import { Clock, CheckCircle2, MessageSquareQuote, Play, Trash2, User } from "lucide-react";
 import { formatDistanceToNow, isPast } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { CompleteTaskDialog } from "./complete-task-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { startTask } from "@/app/actions";
+import { startTask, deleteTask } from "@/app/actions";
+import { DeleteTaskDialog } from "./delete-task-dialog";
+
 
 const priorityText = {
     high: "Alta",
@@ -42,10 +44,16 @@ export function TaskCard({ task }: { task: Task }) {
   }
 
   return (
-    <Card className="shadow-sm hover:shadow-md transition-shadow duration-300 animate-in fade-in-50 flex flex-col justify-between h-full">
+    <Card className="shadow-sm hover:shadow-md transition-shadow duration-300 animate-in fade-in-50 flex flex-col justify-between h-full group">
       <div>
-        <CardHeader className="p-4 pb-2">
+        <CardHeader className="p-4 pb-2 flex-row items-start justify-between">
           <CardTitle className="text-base font-semibold leading-tight">{task.title}</CardTitle>
+            <DeleteTaskDialog task={task}>
+                 <Button size="icon" variant="ghost" className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Trash2 className="h-4 w-4" />
+                    <span className="sr-only">Excluir Tarefa</span>
+                 </Button>
+            </DeleteTaskDialog>
         </CardHeader>
         {task.description && 
           <CardContent className="p-4 pt-0">
@@ -64,32 +72,40 @@ export function TaskCard({ task }: { task: Task }) {
             </CardContent>
          )}
       </div>
-      <CardFooter className="flex justify-between items-center p-4 pt-2">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Badge variant={task.priority === 'high' ? 'destructive' : task.priority === 'medium' ? 'secondary' : 'outline'}>
-            {priorityText[task.priority]}
-          </Badge>
-          <div className={cn("flex items-center gap-1", isDeadlinePast ? "text-destructive" : "")}>
-            <Clock className="h-4 w-4" />
-            <span>{formatDistanceToNow(deadlineDate, { addSuffix: true, locale: ptBR })}</span>
-          </div>
+      <CardFooter className="flex-col items-start gap-4 p-4 pt-2">
+        <div className="flex justify-between items-center w-full">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Badge variant={task.priority === 'high' ? 'destructive' : task.priority === 'medium' ? 'secondary' : 'outline'}>
+                {priorityText[task.priority]}
+            </Badge>
+            <div className={cn("flex items-center gap-1", isDeadlinePast ? "text-destructive" : "")}>
+                <Clock className="h-4 w-4" />
+                <span>{formatDistanceToNow(deadlineDate, { addSuffix: true, locale: ptBR })}</span>
+            </div>
+            </div>
+            <div className="flex items-center gap-2">
+            {task.status === 'todo' && (
+                <Button size="sm" variant="outline" onClick={handleStartTask} disabled={isStarting}>
+                    <Play className="mr-2 h-4 w-4" />
+                    {isStarting ? "Iniciando..." : "Iniciar"}
+                </Button>
+            )}
+            {task.status === 'inprogress' && (
+                <CompleteTaskDialog task={task}>
+                    <Button size="sm" variant="outline">
+                        <CheckCircle2 className="mr-2 h-4 w-4" />
+                        Concluir
+                    </Button>
+                </CompleteTaskDialog>
+            )}
+            </div>
         </div>
-        <div className="flex items-center gap-2">
-          {task.status === 'todo' && (
-              <Button size="sm" variant="outline" onClick={handleStartTask} disabled={isStarting}>
-                  <Play className="mr-2 h-4 w-4" />
-                  {isStarting ? "Iniciando..." : "Iniciar"}
-              </Button>
-          )}
-          {task.status === 'inprogress' && (
-              <CompleteTaskDialog task={task}>
-                  <Button size="sm" variant="outline">
-                      <CheckCircle2 className="mr-2 h-4 w-4" />
-                      Concluir
-                  </Button>
-              </CompleteTaskDialog>
-          )}
-        </div>
+        {task.assigneeName && (
+             <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <User className="h-3.5 w-3.5" />
+                <span>{task.assigneeName}</span>
+             </div>
+        )}
       </CardFooter>
     </Card>
   );

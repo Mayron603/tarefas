@@ -3,7 +3,7 @@
 import { suggestOptimalTaskDistribution } from '@/ai/flows/suggest-optimal-task-distribution';
 import type { SuggestOptimalTaskDistributionInput } from '@/ai/flows/suggest-optimal-task-distribution';
 import { teamMembers } from '@/lib/team';
-import { getTasks, addTask as addTaskToDb, completeTask as completeTaskInDb, updateTaskStatus as updateTaskStatusInDb } from '@/lib/tasks';
+import { getTasks, addTask as addTaskToDb, completeTask as completeTaskInDb, updateTaskStatus as updateTaskStatusInDb, deleteTask as deleteTaskInDb } from '@/lib/tasks';
 import { revalidatePath } from 'next/cache';
 
 export async function getTaskDistributionSuggestions(
@@ -27,12 +27,17 @@ export async function addTask(data: {
   description?: string;
   deadline: Date;
   priority: 'low' | 'medium' | 'high';
+  assigneeId?: string;
 }) {
+  const assignee = teamMembers.find(member => member.id === data.assigneeId);
+
   const task = {
     title: data.title,
     description: data.description,
     deadline: data.deadline.toISOString(),
     priority: data.priority,
+    assigneeId: data.assigneeId,
+    assigneeName: assignee?.name,
   };
 
   try {
@@ -67,5 +72,17 @@ export async function completeTask(taskId: string, resolution: string) {
     } catch (error) {
         console.error(error);
         return { success: false, error: 'Falha ao concluir a tarefa.' };
+    }
+}
+
+export async function deleteTask(taskId: string) {
+    try {
+        await deleteTaskInDb(taskId);
+        revalidatePath('/');
+        revalidatePath('/dashboard');
+        return { success: true };
+    } catch (error) {
+        console.error(error);
+        return { success: false, error: 'Falha ao excluir a tarefa.' };
     }
 }

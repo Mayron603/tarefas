@@ -45,3 +45,9 @@ export async function completeTask(taskId: string, resolution: string): Promise<
         { $set: { status: 'done', resolution: resolution } }
     );
 }
+
+// Delete a task
+export async function deleteTask(taskId: string): Promise<void> {
+    const collection = await getTasksCollection();
+    await collection.deleteOne({ _id: new ObjectId(taskId) });
+}

@@ -33,12 +33,14 @@ import { format } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
 import { ptBR } from 'date-fns/locale';
 import { addTask } from '@/app/actions';
+import { teamMembers } from '@/lib/team';
 
 const taskFormSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
   description: z.string().optional(),
   deadline: z.date({ required_error: 'O prazo é obrigatório.' }),
   priority: z.enum(['low', 'medium', 'high']),
+  assigneeId: z.string().optional(),
 });
 
 type TaskFormValues = z.infer<typeof taskFormSchema>;
@@ -63,7 +65,7 @@ export function AddTaskDialog() {
             className: "bg-accent text-accent-foreground border-0",
         });
         setOpen(false);
-        form.reset({ priority: 'medium' });
+        form.reset({ priority: 'medium', title: '', description: '', deadline: undefined, assigneeId: undefined });
     } else {
         toast({
             title: "Erro ao criar tarefa",
@@ -74,7 +76,12 @@ export function AddTaskDialog() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        if (!isOpen) {
+            form.reset({ priority: 'medium', title: '', description: '', deadline: undefined, assigneeId: undefined });
+        }
+    }}>
       <DialogTrigger asChild>
         <Button>
           <PlusCircle className="mr-2 h-4 w-4" />
@@ -116,6 +123,28 @@ export function AddTaskDialog() {
                 </FormItem>
               )}
             />
+             <FormField
+                control={form.control}
+                name="assigneeId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Atribuir a (Opcional)</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione um membro da equipe" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {teamMembers.map(member => (
+                            <SelectItem key={member.id} value={member.id}>{member.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
