@@ -42,4 +42,6 @@ export async function getSession() {
 }
 
 export async function deleteSession() {
-  cookies().delete
+  cookies().delete('session');
+  redirect('/login');
+}

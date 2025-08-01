@@ -27,4 +27,10 @@ export function Header() {
         <form action={logout}>
           <Button type="submit" variant="outline" size="icon">
               <LogOut className="h-5 w-5" />
-              <span className="
+              <span className="sr-only">Sair</span>
+          </Button>
+        </form>
+      </div>
+    </header>
+  );
+}

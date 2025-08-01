@@ -1,3 +1,4 @@
+
 import clientPromise from "./database";
 import { Collection, ObjectId } from "mongodb";
 import type { User } from "./types";
@@ -10,13 +11,13 @@ async function getUsersCollection(): Promise<Collection<Omit<User, 'id'>>> {
 }
 
 // Create a new user
-export async function createUser(user: Omit<User, 'id'>): Promise<void> {
+export async function createUser(user: { name: string; email: string; passwordHash: string; }): Promise<void> {
   const collection = await getUsersCollection();
   await collection.insertOne(user);
 }
 
 // Get a user by email
-export async function getUserByEmail(email: string): Promise<User | null> {
+export async function getUserByEmail(email: string): Promise<(User & { passwordHash: string }) | null> {
   const collection = await getUsersCollection();
   const user = await collection.findOne({ email });
 
@@ -25,7 +26,7 @@ export async function getUserByEmail(email: string): Promise<User | null> {
   }
   
   const { _id, ...rest } = user;
-  return { ...rest, id: _id.toString() };
+  return { ...rest, id: _id.toString() } as (User & { passwordHash: string });
 }
 
 // Get a user by ID
@@ -42,4 +43,7 @@ export async function getUserById(userId: string): Promise<User | null> {
   }
 
   const { _id, ...rest } = user;
-  
+  // Explicitly exclude passwordHash from the returned user object for security
+  const { passwordHash, ...userWithoutPassword } = rest;
+  return { ...userWithoutPassword, id: _id.toString() };
+}
