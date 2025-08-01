@@ -1,4 +1,3 @@
-
 'use server';
 
 import { NextResponse, type NextRequest } from 'next/server';
@@ -11,15 +10,15 @@ export async function middleware(request: NextRequest) {
   const session = await getSession();
   const { pathname } = request.nextUrl;
 
-  const isProtectedRoute = protectedRoutes.includes(pathname);
   const isAuthRoute = authRoutes.includes(pathname);
-
-  if (isProtectedRoute && !session) {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
+  const isProtectedRoute = protectedRoutes.includes(pathname);
 
   if (isAuthRoute && session) {
     return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  if (isProtectedRoute && !session) {
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();

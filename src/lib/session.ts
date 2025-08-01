@@ -1,7 +1,8 @@
+'use server';
+
 import 'server-only';
 import { cookies } from 'next/headers';
 import { SignJWT, jwtVerify } from 'jose';
-import { redirect } from 'next/navigation';
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -24,7 +25,9 @@ export async function createSession(userId: string) {
 }
 
 export async function getSession() {
-  const sessionCookie = cookies().get('session')?.value;
+  const cookieStore = cookies();
+  const sessionCookie = cookieStore.get('session')?.value;
+  
   if (!sessionCookie) {
     return null;
   }
