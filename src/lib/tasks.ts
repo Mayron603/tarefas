@@ -19,7 +19,6 @@ export async function getTasks(): Promise<Task[]> {
     return {
       ...rest,
       id: _id.toString(),
-      _id: _id, // Keep original _id for server-side logic if needed, but it should be serializable now
     };
   }) as unknown as Task[];
 }

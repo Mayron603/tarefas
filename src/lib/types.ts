@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 export type TaskStatus = 'todo' | 'inprogress' | 'done';
 
 export interface Task {
-  _id: ObjectId; // Still ObjectId on the server
+  _id?: ObjectId; // Optional on the client, as it will not be passed down
   id: string; // string representation of _id for the client
   title: string;
   description?: string;
