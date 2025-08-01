@@ -1,0 +1,80 @@
+import type { TeamMember, Task } from './types';
+
+export const teamMembers: TeamMember[] = [
+  { id: '1', name: 'Alice Johnson', avatarUrl: 'https://placehold.co/40x40.png', skills: ['Frontend', 'UI/UX'], availability: '40 hrs/week', currentWorkload: 20 },
+  { id: '2', name: 'Bob Williams', avatarUrl: 'https://placehold.co/40x40.png', skills: ['Backend', 'Database'], availability: '40 hrs/week', currentWorkload: 30 },
+  { id: '3', name: 'Charlie Brown', avatarUrl: 'https://placehold.co/40x40.png', skills: ['DevOps', 'CI/CD'], availability: '30 hrs/week', currentWorkload: 15 },
+  { id: '4', name: 'Diana Prince', avatarUrl: 'https://placehold.co/40x40.png', skills: ['QA', 'Testing'], availability: '40 hrs/week', currentWorkload: 25 },
+];
+
+export const tasks: Task[] = [
+  {
+    id: 'task-1',
+    title: 'Design landing page mockups',
+    description: 'Create high-fidelity mockups in Figma for the new landing page.',
+    status: 'todo',
+    priority: 'high',
+    deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+    assignee: teamMembers[0],
+  },
+  {
+    id: 'task-2',
+    title: 'Develop user authentication API',
+    description: 'Set up endpoints for user registration, login, and logout.',
+    status: 'inprogress',
+    priority: 'high',
+    deadline: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+    assignee: teamMembers[1],
+  },
+  {
+    id: 'task-3',
+    title: 'Set up CI/CD pipeline',
+    description: 'Configure GitHub Actions for automated testing and deployment.',
+    status: 'inprogress',
+    priority: 'medium',
+    deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    assignee: teamMembers[2],
+  },
+  {
+    id: 'task-4',
+    title: 'Write E2E tests for login flow',
+    description: 'Use Cypress to write end-to-end tests for the user authentication flow.',
+    status: 'todo',
+    priority: 'medium',
+    deadline: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000).toISOString(),
+    assignee: teamMembers[3],
+  },
+  {
+    id: 'task-5',
+    title: 'Refactor database schema',
+    description: 'Optimize the database schema for better performance.',
+    status: 'done',
+    priority: 'low',
+    deadline: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    assignee: teamMembers[1],
+  },
+  {
+    id: 'task-6',
+    title: 'Implement password reset feature',
+    status: 'todo',
+    priority: 'high',
+    deadline: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'task-7',
+    title: 'Update documentation for API',
+    status: 'done',
+    priority: 'low',
+    deadline: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    assignee: teamMembers[0],
+  },
+  {
+    id: 'task-8',
+    title: 'Onboard new marketing intern',
+    description: 'Prepare onboarding materials and schedule introduction meetings.',
+    status: 'done',
+    priority: 'medium',
+    deadline: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    assignee: teamMembers[0],
+  },
+];
