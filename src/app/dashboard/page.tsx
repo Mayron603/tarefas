@@ -8,7 +8,7 @@ function ReportsPlaceholder() {
     "use client"
     const { toast } = useToast();
     return (
-        <Button onClick={() => toast({ title: "Em Breve!", description: "A geração de relatórios estará disponível em breve."})}>
+        <Button onClick={() => toast({ title: "Em Breve!", description: "A geração de relatórios estará disponível em breve."})} disabled>
             Gerar Relatório
         </Button>
     )
