@@ -37,25 +37,42 @@ import { addTask } from '@/app/actions';
 const taskFormSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
   description: z.string().optional(),
-  deadline: z.date({ required_error: 'O prazo é obrigatório.' }),
+  deadlineDate: z.date({ required_error: 'A data do prazo é obrigatória.' }),
+  deadlineTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido (HH:mm).").optional(),
   priority: z.enum(['low', 'medium', 'high']),
   assigneeName: z.string().optional(),
 });
 
 type TaskFormValues = z.infer<typeof taskFormSchema>;
 
+const defaultValues: Partial<TaskFormValues> = {
+    priority: 'medium',
+    title: '',
+    description: '',
+    assigneeName: '',
+    deadlineTime: '23:59',
+};
+
 export function AddTaskDialog() {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
-    defaultValues: {
-      priority: 'medium',
-    },
+    defaultValues,
   });
 
   async function onSubmit(data: TaskFormValues) {
-    const result = await addTask(data);
+    const [hours, minutes] = data.deadlineTime ? data.deadlineTime.split(':').map(Number) : [23, 59];
+    const combinedDeadline = new Date(data.deadlineDate);
+    combinedDeadline.setHours(hours, minutes, 0, 0);
+
+    const result = await addTask({
+        title: data.title,
+        description: data.description,
+        deadline: combinedDeadline,
+        priority: data.priority,
+        assigneeName: data.assigneeName,
+    });
 
     if (result.success) {
         toast({
@@ -64,7 +81,7 @@ export function AddTaskDialog() {
             className: "bg-accent text-accent-foreground border-0",
         });
         setOpen(false);
-        form.reset({ priority: 'medium', title: '', description: '', deadline: undefined, assigneeName: '' });
+        form.reset(defaultValues);
     } else {
         toast({
             title: "Erro ao criar tarefa",
@@ -78,7 +95,7 @@ export function AddTaskDialog() {
     <Dialog open={open} onOpenChange={(isOpen) => {
         setOpen(isOpen);
         if (!isOpen) {
-            form.reset({ priority: 'medium', title: '', description: '', deadline: undefined, assigneeName: '' });
+            form.reset(defaultValues);
         }
     }}>
       <DialogTrigger asChild>
@@ -138,10 +155,10 @@ export function AddTaskDialog() {
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="deadline"
+                name="deadlineDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col pt-2">
-                    <FormLabel className="pb-2.5">Prazo Final</FormLabel>
+                    <FormLabel className="pb-2.5">Data Final</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -178,6 +195,20 @@ export function AddTaskDialog() {
               />
               <FormField
                 control={form.control}
+                name="deadlineTime"
+                render={({ field }) => (
+                    <FormItem className="flex flex-col pt-2">
+                        <FormLabel className="pb-2.5">Hora Final</FormLabel>
+                        <FormControl>
+                            <Input type="time" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+                />
+            </div>
+            <FormField
+                control={form.control}
                 name="priority"
                 render={({ field }) => (
                   <FormItem>
@@ -198,7 +229,6 @@ export function AddTaskDialog() {
                   </FormItem>
                 )}
               />
-            </div>
             <DialogFooter>
               <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
               <Button type="submit" disabled={form.formState.isSubmitting}>

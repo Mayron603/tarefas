@@ -92,7 +92,7 @@ export function TaskCard({ task }: { task: Task }) {
             </Badge>
             <div className={cn("flex items-center gap-1", isDeadlinePast ? "text-destructive" : "")}>
                 <Clock className="h-4 w-4" />
-                <span>{format(deadlineDate, "dd/MM/yyyy", { locale: ptBR })}</span>
+                <span>{format(deadlineDate, "dd/MM/yy 'às' HH:mm", { locale: ptBR })}</span>
             </div>
             </div>
             <div className="flex items-center gap-2">
