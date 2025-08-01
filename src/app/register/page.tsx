@@ -1,6 +1,7 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import { register } from "@/app/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,17 +10,20 @@ import { Label } from "@/components/ui/label";
 import { GanttChartSquare, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
 
 export default function RegisterPage() {
-    const [state, formAction] = useFormState(register, null);
+    const [state, formAction] = useActionState(register, null);
     const { toast } = useToast();
 
      useEffect(() => {
-        if (state?.success === false) {
+        if (state?.success === false && state.error) {
+            const errorMessage = typeof state.error === 'object' ? 
+                Object.values(state.error).flat().join(', ') : 
+                state.error;
+
             toast({
                 title: "Erro de Registro",
-                description: state.error,
+                description: errorMessage,
                 variant: "destructive",
             });
         }
@@ -49,9 +53,6 @@ export default function RegisterPage() {
                             <Label htmlFor="password">Senha</Label>
                             <Input id="password" name="password" type="password" required />
                         </div>
-                        {state?.error && (
-                            <p className="text-sm text-destructive">{state.error}</p>
-                        )}
                         <RegisterButton />
                     </form>
                      <div className="mt-4 text-center text-sm">
@@ -73,4 +74,7 @@ function RegisterButton() {
     return (
         <Button type="submit" className="w-full" aria-disabled={pending}>
            {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-           {pending ? "Registrando..."
+           {pending ? "Registrando..." : "Registrar"}
+        </Button>
+    );
+}

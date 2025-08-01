@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { login } from "@/app/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,11 +13,11 @@ import { useEffect } from "react";
 import { useFormStatus } from "react-dom";
 
 export default function LoginPage() {
-    const [state, formAction] = useFormState(login, null);
+    const [state, formAction] = useActionState(login, null);
     const { toast } = useToast();
 
     useEffect(() => {
-        if (state?.success === false) {
+        if (state?.success === false && state.error) {
             toast({
                 title: "Erro de Login",
                 description: state.error,
@@ -47,9 +47,6 @@ export default function LoginPage() {
                             <Label htmlFor="password">Senha</Label>
                             <Input id="password" name="password" type="password" required />
                         </div>
-                         {state?.error && (
-                            <p className="text-sm text-destructive">{state.error}</p>
-                        )}
                         <LoginButton />
                     </form>
                      <div className="mt-4 text-center text-sm">
