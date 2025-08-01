@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Task } from "@/lib/types";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, CheckCircle2, MessageSquareQuote, Play, Trash2, User, Camera } from "lucide-react";
-import { format, isPast } from "date-fns";
+import { format, isPast, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { CompleteTaskDialog } from "./complete-task-dialog";
@@ -22,9 +22,16 @@ const priorityText = {
 
 export function TaskCard({ task }: { task: Task }) {
   const { toast } = useToast();
-  const deadlineDate = new Date(task.deadline);
-  const isDeadlinePast = isPast(deadlineDate) && task.status !== 'done';
   const [isStarting, setIsStarting] = useState(false);
+  const [formattedDeadline, setFormattedDeadline] = useState('');
+  const [isDeadlinePast, setIsDeadlinePast] = useState(false);
+
+  useEffect(() => {
+    const deadlineDate = parseISO(task.deadline);
+    setFormattedDeadline(format(deadlineDate, "dd/MM/yy 'às' HH:mm", { locale: ptBR }));
+    setIsDeadlinePast(isPast(deadlineDate) && task.status !== 'done');
+  }, [task.deadline, task.status]);
+
 
   const handleStartTask = async () => {
     setIsStarting(true);
@@ -92,7 +99,7 @@ export function TaskCard({ task }: { task: Task }) {
             </Badge>
             <div className={cn("flex items-center gap-1", isDeadlinePast ? "text-destructive" : "")}>
                 <Clock className="h-4 w-4" />
-                <span>{format(deadlineDate, "dd/MM/yy 'às' HH:mm", { locale: ptBR })}</span>
+                <span>{formattedDeadline || "Carregando..."}</span>
             </div>
             </div>
             <div className="flex items-center gap-2">
