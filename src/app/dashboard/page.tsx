@@ -1,18 +1,8 @@
 import { AppShell } from "@/components/app-shell";
 import { OverviewCharts } from "@/components/overview-charts";
-import { Button } from "@/components/ui/button";
 import { AiSuggestionModal } from "@/components/ai-suggestion-modal";
-import { useToast } from "@/hooks/use-toast";
+import { ReportsPlaceholder } from "@/components/reports-placeholder";
 
-function ReportsPlaceholder() {
-    "use client"
-    const { toast } = useToast();
-    return (
-        <Button onClick={() => toast({ title: "Em Breve!", description: "A geração de relatórios estará disponível em breve."})} disabled>
-            Gerar Relatório
-        </Button>
-    )
-}
 
 export default function DashboardPage() {
   return (
