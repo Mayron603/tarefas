@@ -12,6 +12,7 @@ export interface Task {
   deadline: string; // ISO date string
   resolution?: string; // Text added when the task is marked as done
   assigneeName?: string;
+  proofImage?: string; // Data URI of the uploaded image
 }
 
 export interface TeamMember {

@@ -61,9 +61,9 @@ export async function startTask(taskId: string) {
     }
 }
 
-export async function completeTask(taskId: string, resolution: string) {
+export async function completeTask(taskId: string, resolution: string, proofImage?: string) {
     try {
-        await completeTaskInDb(taskId, resolution);
+        await completeTaskInDb(taskId, resolution, proofImage);
         revalidatePath('/');
         revalidatePath('/dashboard');
         return { success: true };
