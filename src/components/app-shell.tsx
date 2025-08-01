@@ -25,7 +25,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <SidebarProvider open={open} onOpenChange={setOpen}>
       <Sidebar>
         <SidebarHeader>
-          <h1 className="text-2xl font-bold text-primary font-headline pl-2">TaskFlow</h1>
+          <h1 className="text-2xl font-bold text-primary font-headline pl-2">FluxoDeTrabalho</h1>
         </SidebarHeader>
         <SidebarContent>
           <SidebarNav />

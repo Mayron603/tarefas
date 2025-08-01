@@ -4,13 +4,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
 import { formatDistanceToNow, isPast } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
 const priorityText = {
-    high: "High",
-    medium: "Medium",
-    low: "Low",
+    high: "Alta",
+    medium: "Média",
+    low: "Baixa",
 }
 
 export function TaskCard({ task }: { task: Task }) {
@@ -34,7 +35,7 @@ export function TaskCard({ task }: { task: Task }) {
           </Badge>
           <div className={cn("flex items-center gap-1", isDeadlinePast ? "text-destructive" : "")}>
             <Clock className="h-4 w-4" />
-            <span>{formatDistanceToNow(deadlineDate, { addSuffix: true })}</span>
+            <span>{formatDistanceToNow(deadlineDate, { addSuffix: true, locale: ptBR })}</span>
           </div>
         </div>
         {task.assignee && (

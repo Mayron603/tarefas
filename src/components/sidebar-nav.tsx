@@ -11,10 +11,10 @@ export function SidebarNav() {
   const { toast } = useToast();
 
   const menuItems = [
-    { href: "/", label: "Task Board", icon: ListTodo },
-    { href: "/dashboard", label: "Dashboard", icon: BarChart2 },
-    { href: "#", label: "Reports", icon: FileDown, action: () => toast({ title: "Coming Soon!", description: "Report generation will be available soon."}) },
-    { href: "#", label: "Calendar Sync", icon: Calendar, action: () => toast({ title: "Coming Soon!", description: "Calendar sync will be available soon."}) },
+    { href: "/", label: "Quadro de Tarefas", icon: ListTodo },
+    { href: "/dashboard", label: "Painel", icon: BarChart2 },
+    { href: "#", label: "Relatórios", icon: FileDown, action: () => toast({ title: "Em Breve!", description: "A geração de relatórios estará disponível em breve."}) },
+    { href: "#", label: "Sincronizar Calendário", icon: Calendar, action: () => toast({ title: "Em Breve!", description: "A sincronização com o calendário estará disponível em breve."}) },
   ];
 
   return (

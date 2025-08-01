@@ -14,25 +14,25 @@ const COLORS = {
 
 const chartConfigStatus: ChartConfig = {
   tasks: {
-    label: "Tasks",
+    label: "Tarefas",
   },
   todo: {
-    label: "To Do",
+    label: "A Fazer",
     color: COLORS.todo,
   },
   inprogress: {
-    label: "In Progress",
+    label: "Em Progresso",
     color: COLORS.inprogress,
   },
   done: {
-    label: "Done",
+    label: "Concluído",
     color: COLORS.done,
   },
 };
 
 const chartConfigMembers: ChartConfig = {
     tasks: {
-        label: "Tasks",
+        label: "Tarefas",
         color: "hsl(var(--chart-1))",
     }
 }
@@ -69,8 +69,8 @@ export function OverviewCharts() {
     <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Tasks by Status</CardTitle>
-          <CardDescription>A breakdown of all tasks by their current status.</CardDescription>
+          <CardTitle>Tarefas por Status</CardTitle>
+          <CardDescription>Uma divisão de todas as tarefas por seu status atual.</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfigStatus} className="min-h-[250px] w-full">
@@ -100,8 +100,8 @@ export function OverviewCharts() {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Tasks per Team Member</CardTitle>
-          <CardDescription>Total assigned tasks for each team member.</CardDescription>
+          <CardTitle>Tarefas por Membro da Equipe</CardTitle>
+          <CardDescription>Total de tarefas atribuídas para cada membro da equipe.</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfigMembers} className="min-h-[250px] w-full">

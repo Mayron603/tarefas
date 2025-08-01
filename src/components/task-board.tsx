@@ -9,9 +9,9 @@ import { Button } from '@/components/ui/button';
 import { GripVertical, ListFilter } from 'lucide-react';
 
 const statusColumns: { id: TaskStatus; title: string }[] = [
-  { id: 'todo', title: 'To Do' },
-  { id: 'inprogress', title: 'In Progress' },
-  { id: 'done', title: 'Done' },
+  { id: 'todo', title: 'A Fazer' },
+  { id: 'inprogress', title: 'Em Progresso' },
+  { id: 'done', title: 'Concluído' },
 ];
 
 export function TaskBoard() {
@@ -27,7 +27,7 @@ export function TaskBoard() {
 
       const unassigned = tasks.filter(task => !task.assignee);
       if (unassigned.length > 0) {
-        grouped['Unassigned'] = unassigned;
+        grouped['Não Atribuído'] = unassigned;
       }
       
       const dynamicColumns = Object.keys(grouped).filter(name => grouped[name].length > 0).map(assigneeName => ({
@@ -53,21 +53,21 @@ export function TaskBoard() {
   return (
     <div className="flex flex-col h-full gap-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold tracking-tight font-headline">Task Board</h2>
+        <h2 className="text-2xl font-bold tracking-tight font-headline">Quadro de Tarefas</h2>
         <div className="flex items-center gap-2">
             <Select value={groupBy} onValueChange={(value) => setGroupBy(value as 'status' | 'assignee')}>
                 <SelectTrigger className="w-[180px]">
                     <GripVertical className="mr-2 h-4 w-4"/>
-                    <SelectValue placeholder="Group by..." />
+                    <SelectValue placeholder="Agrupar por..." />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="status">Status</SelectItem>
-                    <SelectItem value="assignee">Assignee</SelectItem>
+                    <SelectItem value="assignee">Responsável</SelectItem>
                 </SelectContent>
             </Select>
             <Button variant="outline">
                 <ListFilter className="mr-2 h-4 w-4" />
-                Filter
+                Filtrar
             </Button>
         </div>
       </div>

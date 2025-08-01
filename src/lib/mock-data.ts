@@ -1,17 +1,17 @@
 import type { TeamMember, Task } from './types';
 
 export const teamMembers: TeamMember[] = [
-  { id: '1', name: 'Alice Johnson', avatarUrl: 'https://placehold.co/40x40.png', skills: ['Frontend', 'UI/UX'], availability: '40 hrs/week', currentWorkload: 20 },
-  { id: '2', name: 'Bob Williams', avatarUrl: 'https://placehold.co/40x40.png', skills: ['Backend', 'Database'], availability: '40 hrs/week', currentWorkload: 30 },
-  { id: '3', name: 'Charlie Brown', avatarUrl: 'https://placehold.co/40x40.png', skills: ['DevOps', 'CI/CD'], availability: '30 hrs/week', currentWorkload: 15 },
-  { id: '4', name: 'Diana Prince', avatarUrl: 'https://placehold.co/40x40.png', skills: ['QA', 'Testing'], availability: '40 hrs/week', currentWorkload: 25 },
+  { id: '1', name: 'Alice Johnson', avatarUrl: 'https://placehold.co/40x40.png', skills: ['Frontend', 'UI/UX'], availability: '40 horas/semana', currentWorkload: 20 },
+  { id: '2', name: 'Bob Williams', avatarUrl: 'https://placehold.co/40x40.png', skills: ['Backend', 'Banco de Dados'], availability: '40 horas/semana', currentWorkload: 30 },
+  { id: '3', name: 'Charlie Brown', avatarUrl: 'https://placehold.co/40x40.png', skills: ['DevOps', 'CI/CD'], availability: '30 horas/semana', currentWorkload: 15 },
+  { id: '4', name: 'Diana Prince', avatarUrl: 'https://placehold.co/40x40.png', skills: ['QA', 'Testes'], availability: '40 horas/semana', currentWorkload: 25 },
 ];
 
 export const tasks: Task[] = [
   {
     id: 'task-1',
-    title: 'Design landing page mockups',
-    description: 'Create high-fidelity mockups in Figma for the new landing page.',
+    title: 'Desenhar mockups da página inicial',
+    description: 'Criar mockups de alta fidelidade no Figma para a nova página inicial.',
     status: 'todo',
     priority: 'high',
     deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
@@ -19,8 +19,8 @@ export const tasks: Task[] = [
   },
   {
     id: 'task-2',
-    title: 'Develop user authentication API',
-    description: 'Set up endpoints for user registration, login, and logout.',
+    title: 'Desenvolver API de autenticação de usuário',
+    description: 'Configurar endpoints para registro, login e logout de usuários.',
     status: 'inprogress',
     priority: 'high',
     deadline: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
@@ -28,8 +28,8 @@ export const tasks: Task[] = [
   },
   {
     id: 'task-3',
-    title: 'Set up CI/CD pipeline',
-    description: 'Configure GitHub Actions for automated testing and deployment.',
+    title: 'Configurar pipeline de CI/CD',
+    description: 'Configurar GitHub Actions para testes e implantação automatizados.',
     status: 'inprogress',
     priority: 'medium',
     deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
@@ -37,8 +37,8 @@ export const tasks: Task[] = [
   },
   {
     id: 'task-4',
-    title: 'Write E2E tests for login flow',
-    description: 'Use Cypress to write end-to-end tests for the user authentication flow.',
+    title: 'Escrever testes E2E para fluxo de login',
+    description: 'Usar o Cypress para escrever testes de ponta a ponta para o fluxo de autenticação do usuário.',
     status: 'todo',
     priority: 'medium',
     deadline: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000).toISOString(),
@@ -46,8 +46,8 @@ export const tasks: Task[] = [
   },
   {
     id: 'task-5',
-    title: 'Refactor database schema',
-    description: 'Optimize the database schema for better performance.',
+    title: 'Refatorar esquema do banco de dados',
+    description: 'Otimizar o esquema do banco de dados para melhor desempenho.',
     status: 'done',
     priority: 'low',
     deadline: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
@@ -55,14 +55,14 @@ export const tasks: Task[] = [
   },
   {
     id: 'task-6',
-    title: 'Implement password reset feature',
+    title: 'Implementar recurso de redefinição de senha',
     status: 'todo',
     priority: 'high',
     deadline: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
   },
   {
     id: 'task-7',
-    title: 'Update documentation for API',
+    title: 'Atualizar documentação da API',
     status: 'done',
     priority: 'low',
     deadline: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
@@ -70,8 +70,8 @@ export const tasks: Task[] = [
   },
   {
     id: 'task-8',
-    title: 'Onboard new marketing intern',
-    description: 'Prepare onboarding materials and schedule introduction meetings.',
+    title: 'Integrar novo estagiário de marketing',
+    description: 'Preparar materiais de integração e agendar reuniões de apresentação.',
     status: 'done',
     priority: 'medium',
     deadline: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),

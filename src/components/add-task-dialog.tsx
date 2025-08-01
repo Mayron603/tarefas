@@ -32,11 +32,12 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { teamMembers } from '@/lib/mock-data';
 import { useToast } from '@/hooks/use-toast';
+import { ptBR } from 'date-fns/locale';
 
 const taskFormSchema = z.object({
-  title: z.string().min(1, 'Title is required.'),
+  title: z.string().min(1, 'O título é obrigatório.'),
   description: z.string().optional(),
-  deadline: z.date({ required_error: 'A deadline is required.' }),
+  deadline: z.date({ required_error: 'O prazo é obrigatório.' }),
   assigneeId: z.string().optional(),
   priority: z.enum(['low', 'medium', 'high']),
 });
@@ -56,8 +57,8 @@ export function AddTaskDialog() {
   function onSubmit(data: TaskFormValues) {
     console.log(data);
     toast({
-      title: "Task Created",
-      description: "The new task has been added to the board.",
+      title: "Tarefa Criada",
+      description: "A nova tarefa foi adicionada ao quadro.",
       className: "bg-accent text-accent-foreground border-0",
     });
     setOpen(false);
@@ -69,14 +70,14 @@ export function AddTaskDialog() {
       <DialogTrigger asChild>
         <Button>
           <PlusCircle className="mr-2 h-4 w-4" />
-          Add Task
+          Adicionar Tarefa
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
-          <DialogTitle>Add New Task</DialogTitle>
+          <DialogTitle>Adicionar Nova Tarefa</DialogTitle>
           <DialogDescription>
-            Fill in the details below to create a new task.
+            Preencha os detalhes abaixo para criar uma nova tarefa.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -86,9 +87,9 @@ export function AddTaskDialog() {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>Título</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. Design new login screen" {...field} />
+                    <Input placeholder="ex: Desenhar nova tela de login" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -99,9 +100,9 @@ export function AddTaskDialog() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description (Optional)</FormLabel>
+                  <FormLabel>Descrição (Opcional)</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Add a more detailed description..." {...field} />
+                    <Textarea placeholder="Adicione uma descrição mais detalhada..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,7 +114,7 @@ export function AddTaskDialog() {
                 name="deadline"
                 render={({ field }) => (
                   <FormItem className="flex flex-col pt-2">
-                    <FormLabel className="pb-2.5">Deadline</FormLabel>
+                    <FormLabel className="pb-2.5">Prazo Final</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -125,9 +126,9 @@ export function AddTaskDialog() {
                             )}
                           >
                             {field.value ? (
-                              format(field.value, 'PPP')
+                              format(field.value, 'PPP', { locale: ptBR})
                             ) : (
-                              <span>Pick a date</span>
+                              <span>Escolha uma data</span>
                             )}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
@@ -135,6 +136,7 @@ export function AddTaskDialog() {
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
+                          locale={ptBR}
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
@@ -152,17 +154,17 @@ export function AddTaskDialog() {
                 name="priority"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Priority</FormLabel>
+                    <FormLabel>Prioridade</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select priority" />
+                          <SelectValue placeholder="Selecione a prioridade" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="low">Low</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="high">High</SelectItem>
+                        <SelectItem value="low">Baixa</SelectItem>
+                        <SelectItem value="medium">Média</SelectItem>
+                        <SelectItem value="high">Alta</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -175,11 +177,11 @@ export function AddTaskDialog() {
               name="assigneeId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Assign To (Optional)</FormLabel>
+                  <FormLabel>Atribuir a (Opcional)</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a team member" />
+                        <SelectValue placeholder="Selecione um membro da equipe" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -193,8 +195,8 @@ export function AddTaskDialog() {
               )}
             />
             <DialogFooter>
-              <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
-              <Button type="submit">Create Task</Button>
+              <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
+              <Button type="submit">Criar Tarefa</Button>
             </DialogFooter>
           </form>
         </Form>

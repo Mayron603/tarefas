@@ -33,15 +33,15 @@ export function AiSuggestionModal() {
         .filter(t => t.status === 'todo')
         .map(task => ({
             name: task.title,
-            description: task.description || 'No description',
+            description: task.description || 'Sem descrição',
             deadline: task.deadline,
             priority: task.priority.charAt(0).toUpperCase() + task.priority.slice(1) as 'High' | 'Medium' | 'Low',
         }));
     
     if (unassignedTasks.length === 0) {
         toast({
-            title: "No Tasks to Assign",
-            description: "There are no tasks in the 'To Do' column to assign.",
+            title: "Nenhuma Tarefa para Atribuir",
+            description: "Não há tarefas na coluna 'A Fazer' para atribuir.",
             variant: "default",
         });
         setIsLoading(false);
@@ -58,7 +58,7 @@ export function AiSuggestionModal() {
       setSuggestions(result.data);
     } else {
       toast({
-        title: "Error",
+        title: "Erro",
         description: result.error,
         variant: "destructive",
       });
@@ -67,8 +67,8 @@ export function AiSuggestionModal() {
 
   function handleApply() {
       toast({
-          title: "Suggestions Applied!",
-          description: "Tasks have been assigned based on AI suggestions.",
+          title: "Sugestões Aplicadas!",
+          description: "As tarefas foram atribuídas com base nas sugestões da IA.",
           className: "bg-accent text-accent-foreground border-0",
       });
       setOpen(false);
@@ -79,14 +79,14 @@ export function AiSuggestionModal() {
       <DialogTrigger asChild>
         <Button variant="outline">
           <Wand2 className="mr-2 h-4 w-4" />
-          AI Suggestions
+          Sugestões de IA
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>AI-Powered Task Distribution</DialogTitle>
+          <DialogTitle>Distribuição de Tarefas com IA</DialogTitle>
           <DialogDescription>
-            Let AI suggest the optimal task distribution for your team based on skills, availability, and workload.
+            Deixe a IA sugerir a distribuição ideal de tarefas para sua equipe com base em habilidades, disponibilidade e carga de trabalho.
           </DialogDescription>
         </DialogHeader>
 
@@ -95,14 +95,14 @@ export function AiSuggestionModal() {
               <div className="p-4 rounded-full bg-primary/10">
                   <Wand2 className="h-10 w-10 text-primary" />
               </div>
-              <p className="text-muted-foreground">Click the button below to generate assignments for 'To Do' tasks.</p>
+              <p className="text-muted-foreground">Clique no botão abaixo para gerar atribuições para tarefas 'A Fazer'.</p>
           </div>
         )}
 
         {isLoading && (
             <div className="flex items-center justify-center p-8">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="ml-4">Analyzing tasks and team members...</p>
+                <p className="ml-4">Analisando tarefas e membros da equipe...</p>
             </div>
         )}
         
@@ -128,17 +128,17 @@ export function AiSuggestionModal() {
 
         <DialogFooter className="pt-4 sm:justify-between">
             <div>
-            {suggestions && <Button onClick={handleApply}>Apply Suggestions</Button>}
+            {suggestions && <Button onClick={handleApply}>Aplicar Sugestões</Button>}
             </div>
             <div className='flex gap-2'>
             {suggestions && (
                  <Button type="button" variant="ghost" onClick={() => setSuggestions(null)}>
-                    Clear
+                    Limpar
                 </Button>
             )}
             <Button onClick={handleGetSuggestions} disabled={isLoading}>
                 {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
-                {suggestions ? 'Regenerate' : 'Generate Suggestions'}
+                {suggestions ? 'Gerar Novamente' : 'Gerar Sugestões'}
             </Button>
             </div>
         </DialogFooter>
