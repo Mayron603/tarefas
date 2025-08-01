@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { GanttChartSquare } from "lucide-react";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function RegisterPage() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-background">
             <Card className="mx-auto max-w-sm w-full">
@@ -13,11 +13,15 @@ export default function LoginPage() {
                     <div className="inline-block mx-auto">
                      <GanttChartSquare className="h-8 w-8 text-primary" />
                     </div>
-                    <CardTitle className="text-2xl font-bold font-headline">Bem-vindo de volta!</CardTitle>
-                    <CardDescription>Insira suas credenciais para acessar seu quadro</CardDescription>
+                    <CardTitle className="text-2xl font-bold font-headline">Crie sua Conta</CardTitle>
+                    <CardDescription>Insira seus dados para começar a gerenciar suas tarefas</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="name">Nome</Label>
+                            <Input id="name" type="text" placeholder="Seu nome completo" required />
+                        </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <Input id="email" type="email" placeholder="seu@email.com" required />
@@ -27,13 +31,13 @@ export default function LoginPage() {
                             <Input id="password" type="password" required />
                         </div>
                         <Button type="submit" className="w-full">
-                            Entrar
+                            Registrar
                         </Button>
                     </div>
                      <div className="mt-4 text-center text-sm">
-                        Não tem uma conta?{' '}
-                        <Link href="/register" className="underline">
-                            Registre-se
+                        Já tem uma conta?{' '}
+                        <Link href="/login" className="underline">
+                            Entrar
                         </Link>
                     </div>
                 </CardContent>
