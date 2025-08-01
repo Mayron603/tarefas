@@ -46,14 +46,7 @@ export function OverviewCharts() {
   useEffect(() => {
     async function loadTasks() {
         const fetchedTasks = await fetchTasks();
-        const tasksWithAssignees = fetchedTasks.map(task => {
-            if (task.assigneeId) {
-                const assignee = teamMembers.find(m => m.id === task.assigneeId);
-                return { ...task, assignee };
-            }
-            return task;
-        });
-        setTasks(tasksWithAssignees);
+        setTasks(fetchedTasks);
     }
     loadTasks();
   }, []);
@@ -70,22 +63,8 @@ export function OverviewCharts() {
     ];
   }, [tasks]);
 
-  const memberData = useMemo(() => {
-      const counts = tasks.reduce((acc, task) => {
-          if(task.assignee){
-            acc[task.assignee.name] = (acc[task.assignee.name] || 0) + 1;
-          }
-          return acc;
-      }, {} as Record<string, number>);
-      
-      return Object.entries(counts).map(([name, count]) => ({
-          name: name.split(' ')[0], // Use first name for brevity
-          tasks: count,
-      }));
-  }, [tasks]);
-
   return (
-    <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
+    <div className="grid gap-6">
       <Card>
         <CardHeader>
           <CardTitle>Tarefas por Status</CardTitle>
@@ -114,31 +93,6 @@ export function OverviewCharts() {
                   )
               }}/>
             </RechartsPieChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Tarefas por Membro da Equipe</CardTitle>
-          <CardDescription>Total de tarefas atribuídas para cada membro da equipe.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfigMembers} className="min-h-[250px] w-full">
-            <BarChart data={memberData} accessibilityLayer>
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="name"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-              />
-              <YAxis />
-              <Tooltip
-                cursor={false}
-                content={<ChartTooltipContent indicator="dot" />}
-              />
-              <Bar dataKey="tasks" fill="var(--color-tasks)" radius={8} />
-            </BarChart>
           </ChartContainer>
         </CardContent>
       </Card>

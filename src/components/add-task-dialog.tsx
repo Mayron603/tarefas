@@ -30,7 +30,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { PlusCircle, Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { teamMembers } from '@/lib/team';
 import { useToast } from '@/hooks/use-toast';
 import { ptBR } from 'date-fns/locale';
 import { addTask } from '@/app/actions';
@@ -39,7 +38,6 @@ const taskFormSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
   description: z.string().optional(),
   deadline: z.date({ required_error: 'O prazo é obrigatório.' }),
-  assigneeId: z.string().optional(),
   priority: z.enum(['low', 'medium', 'high']),
 });
 
@@ -136,7 +134,7 @@ export function AddTaskDialog() {
                             )}
                           >
                             {field.value ? (
-                              format(field.value, 'PPP', { locale: ptBR})
+                              format(field.value, "PPP 'às' HH:mm", { locale: ptBR})
                             ) : (
                               <span>Escolha uma data</span>
                             )}
@@ -182,28 +180,6 @@ export function AddTaskDialog() {
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="assigneeId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Atribuir a (Opcional)</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione um membro da equipe" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {teamMembers.map(member => (
-                        <SelectItem key={member.id} value={member.id}>{member.name}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <DialogFooter>
               <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
               <Button type="submit" disabled={form.formState.isSubmitting}>

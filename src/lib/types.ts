@@ -10,8 +10,7 @@ export interface Task {
   status: TaskStatus;
   priority: 'low' | 'medium' | 'high';
   deadline: string; // ISO date string
-  assignee?: TeamMember;
-  assigneeId?: string;
+  resolution?: string; // Text added when the task is marked as done
 }
 
 export interface TeamMember {

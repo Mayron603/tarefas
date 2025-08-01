@@ -44,7 +44,6 @@ export function AiSuggestionModal() {
         toast({
             title: "Nenhuma Tarefa para Atribuir",
             description: "Não há tarefas na coluna 'A Fazer' para atribuir.",
-            variant: "default",
         });
         setIsLoading(false);
         return;
@@ -69,17 +68,15 @@ export function AiSuggestionModal() {
 
   function handleApply() {
       toast({
-          title: "Sugestões Aplicadas!",
-          description: "As tarefas foram atribuídas com base nas sugestões da IA.",
-          className: "bg-accent text-accent-foreground border-0",
+          title: "Funcionalidade desativada",
+          description: "A atribuição automática foi desativada.",
       });
-      setOpen(false);
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" disabled>
           <Wand2 className="mr-2 h-4 w-4" />
           Sugestões de IA
         </Button>

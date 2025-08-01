@@ -3,7 +3,7 @@
 import { suggestOptimalTaskDistribution } from '@/ai/flows/suggest-optimal-task-distribution';
 import type { SuggestOptimalTaskDistributionInput } from '@/ai/flows/suggest-optimal-task-distribution';
 import { teamMembers } from '@/lib/team';
-import { getTasks, addTask as addTaskToDb } from '@/lib/tasks';
+import { getTasks, addTask as addTaskToDb, completeTask as completeTaskInDb, updateTaskStatus } from '@/lib/tasks';
 import { revalidatePath } from 'next/cache';
 
 export async function getTaskDistributionSuggestions(
@@ -26,16 +26,13 @@ export async function addTask(data: {
   title: string;
   description?: string;
   deadline: Date;
-  assigneeId?: string;
   priority: 'low' | 'medium' | 'high';
 }) {
   const task = {
     title: data.title,
     description: data.description,
     deadline: data.deadline.toISOString(),
-    assigneeId: data.assigneeId,
     priority: data.priority,
-    status: 'todo' as const,
   };
 
   try {
@@ -47,4 +44,16 @@ export async function addTask(data: {
     console.error(error);
     return { success: false, error: 'Falha ao adicionar a tarefa.' };
   }
+}
+
+export async function completeTask(taskId: string, resolution: string) {
+    try {
+        await completeTaskInDb(taskId, resolution);
+        revalidatePath('/');
+        revalidatePath('/dashboard');
+        return { success: true };
+    } catch (error) {
+        console.error(error);
+        return { success: false, error: 'Falha ao concluir a tarefa.' };
+    }
 }
