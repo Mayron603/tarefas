@@ -87,5 +87,5 @@ export async function login(prevState: any, formData: FormData) {
 
 export async function logout() {
     await deleteSession();
-    redirect('/login');
+    // The middleware will handle the redirect to '/login'
 }
