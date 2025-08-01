@@ -14,10 +14,14 @@ export async function getTasks(): Promise<Task[]> {
   const collection = await getTasksCollection();
   const tasks = await collection.find({}).sort({ deadline: 1 }).toArray();
   // Map MongoDB _id to string id and ensure the object is serializable
-  return tasks.map((task) => ({
-    ...task,
-    id: task._id.toString(),
-  }));
+  return tasks.map((task) => {
+    const { _id, ...rest } = task;
+    return {
+      ...rest,
+      id: _id.toString(),
+      _id: _id, // Keep original _id for server-side logic if needed, but it should be serializable now
+    };
+  }) as unknown as Task[];
 }
 
 // Add a new task
