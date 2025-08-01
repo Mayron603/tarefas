@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 export type TaskStatus = 'todo' | 'inprogress' | 'done';
 
 export interface Task {
-  _id?: ObjectId; // Optional on the client, as it will not be passed down
+  _id?: ObjectId; // Comes from MongoDB
   id: string; // string representation of _id for the client
   title: string;
   description?: string;
@@ -13,6 +13,7 @@ export interface Task {
   resolution?: string; // Text added when the task is marked as done
   assigneeName?: string;
   proofImage?: string; // Data URI of the uploaded image
+  userId?: string; // ID of the user who owns the task
 }
 
 export interface TeamMember {
@@ -23,3 +24,8 @@ export interface TeamMember {
   availability: string;
   currentWorkload: number;
 }
+
+export interface User {
+  id: string; // string representation of _id
+  name: string;
+  email: string

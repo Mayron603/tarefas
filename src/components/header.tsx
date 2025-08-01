@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Search, LogOut } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { AddTaskDialog } from "@/components/add-task-dialog";
-import Link from "next/link";
+import { logout } from "@/app/auth/actions";
 
 
 export function Header() {
@@ -24,13 +24,7 @@ export function Header() {
 
       <div className="flex flex-1 items-center justify-end gap-4">
         <AddTaskDialog />
-        <Button asChild variant="outline" size="icon">
-          <Link href="/login">
-            <LogOut className="h-5 w-5" />
-            <span className="sr-only">Sair</span>
-          </Link>
-        </Button>
-      </div>
-    </header>
-  );
-}
+        <form action={logout}>
+          <Button type="submit" variant="outline" size="icon">
+              <LogOut className="h-5 w-5" />
+              <span className="

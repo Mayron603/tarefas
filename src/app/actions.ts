@@ -2,7 +2,6 @@
 
 import { suggestOptimalTaskDistribution } from '@/ai/flows/suggest-optimal-task-distribution';
 import type { SuggestOptimalTaskDistributionInput } from '@/ai/flows/suggest-optimal-task-distribution';
-import { teamMembers } from '@/lib/team';
 import { getTasks, addTask as addTaskToDb, completeTask as completeTaskInDb, updateTaskStatus as updateTaskStatusInDb, deleteTask as deleteTaskInDb } from '@/lib/tasks';
 import { revalidatePath } from 'next/cache';
 
@@ -19,7 +18,8 @@ export async function getTaskDistributionSuggestions(
 }
 
 export async function fetchTasks() {
-  return await getTasks();
+  const tasks = await getTasks();
+  return tasks;
 }
 
 export async function addTask(data: {
@@ -41,7 +41,6 @@ export async function addTask(data: {
   try {
     await addTaskToDb(task);
     revalidatePath('/');
-    revalidatePath('/dashboard');
     return { success: true };
   } catch (error) {
     console.error(error);
@@ -53,7 +52,6 @@ export async function startTask(taskId: string) {
     try {
         await updateTaskStatusInDb(taskId, 'inprogress');
         revalidatePath('/');
-        revalidatePath('/dashboard');
         return { success: true };
     } catch (error) {
         console.error(error);
@@ -65,7 +63,6 @@ export async function completeTask(taskId: string, resolution: string, proofImag
     try {
         await completeTaskInDb(taskId, resolution, proofImage);
         revalidatePath('/');
-        revalidatePath('/dashboard');
         return { success: true };
     } catch (error) {
         console.error(error);
@@ -77,7 +74,6 @@ export async function deleteTask(taskId: string) {
     try {
         await deleteTaskInDb(taskId);
         revalidatePath('/');
-        revalidatePath('/dashboard');
         return { success: true };
     } catch (error) {
         console.error(error);
