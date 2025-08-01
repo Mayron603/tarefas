@@ -134,7 +134,7 @@ export function AddTaskDialog() {
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "PPP 'às' HH:mm", { locale: ptBR})
+                              format(field.value, "PPP", { locale: ptBR})
                             ) : (
                               <span>Escolha uma data</span>
                             )}
