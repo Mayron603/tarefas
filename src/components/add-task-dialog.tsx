@@ -33,14 +33,13 @@ import { format } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
 import { ptBR } from 'date-fns/locale';
 import { addTask } from '@/app/actions';
-import { teamMembers } from '@/lib/team';
 
 const taskFormSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
   description: z.string().optional(),
   deadline: z.date({ required_error: 'O prazo é obrigatório.' }),
   priority: z.enum(['low', 'medium', 'high']),
-  assigneeId: z.string().optional(),
+  assigneeName: z.string().optional(),
 });
 
 type TaskFormValues = z.infer<typeof taskFormSchema>;
@@ -65,7 +64,7 @@ export function AddTaskDialog() {
             className: "bg-accent text-accent-foreground border-0",
         });
         setOpen(false);
-        form.reset({ priority: 'medium', title: '', description: '', deadline: undefined, assigneeId: undefined });
+        form.reset({ priority: 'medium', title: '', description: '', deadline: undefined, assigneeName: '' });
     } else {
         toast({
             title: "Erro ao criar tarefa",
@@ -79,7 +78,7 @@ export function AddTaskDialog() {
     <Dialog open={open} onOpenChange={(isOpen) => {
         setOpen(isOpen);
         if (!isOpen) {
-            form.reset({ priority: 'medium', title: '', description: '', deadline: undefined, assigneeId: undefined });
+            form.reset({ priority: 'medium', title: '', description: '', deadline: undefined, assigneeName: '' });
         }
     }}>
       <DialogTrigger asChild>
@@ -125,22 +124,13 @@ export function AddTaskDialog() {
             />
              <FormField
                 control={form.control}
-                name="assigneeId"
+                name="assigneeName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Atribuir a (Opcional)</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione um membro da equipe" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {teamMembers.map(member => (
-                            <SelectItem key={member.id} value={member.id}>{member.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                        <Input placeholder="ex: João da Silva" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

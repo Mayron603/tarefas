@@ -27,17 +27,15 @@ export async function addTask(data: {
   description?: string;
   deadline: Date;
   priority: 'low' | 'medium' | 'high';
-  assigneeId?: string;
+  assigneeName?: string;
 }) {
-  const assignee = teamMembers.find(member => member.id === data.assigneeId);
 
   const task = {
     title: data.title,
     description: data.description,
     deadline: data.deadline.toISOString(),
     priority: data.priority,
-    assigneeId: data.assigneeId,
-    assigneeName: assignee?.name,
+    assigneeName: data.assigneeName,
   };
 
   try {
