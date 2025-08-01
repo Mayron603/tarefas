@@ -13,7 +13,7 @@ export interface Task {
   resolution?: string; // Text added when the task is marked as done
   assigneeName?: string;
   proofImage?: string; // Data URI of the uploaded image
-  userId?: string; // ID of the user who owns the task
+  userId: string; // ID of the user who owns the task
 }
 
 export interface TeamMember {
@@ -26,6 +26,10 @@ export interface TeamMember {
 }
 
 export interface User {
+  _id?: ObjectId;
   id: string; // string representation of _id
   name: string;
-  email: string
+  email: string;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
+}

@@ -44,7 +44,12 @@ export default function LoginPage() {
                             <Input id="email" name="email" type="email" placeholder="seu@email.com" required />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password">Senha</Label>
+                            <div className="flex items-center">
+                                <Label htmlFor="password">Senha</Label>
+                                <Link href="/forgot-password" passHref className="ml-auto inline-block text-sm underline">
+                                    Esqueceu sua senha?
+                                </Link>
+                            </div>
                             <Input id="password" name="password" type="password" required />
                         </div>
                         <LoginButton />
