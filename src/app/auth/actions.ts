@@ -63,8 +63,7 @@ export async function login(prevState: any, formData: FormData) {
   }
 
   const { email, password } = validatedFields.data;
-  let userId: string;
-
+  
   try {
     const user = await getUserByEmail(email);
     if (!user) {
@@ -76,14 +75,13 @@ export async function login(prevState: any, formData: FormData) {
       return { success: false, error: 'Credenciais inválidas.' };
     }
     
-    userId = user.id;
+    await createSession(user.id);
 
   } catch (error) {
     console.error(error);
     return { success: false, error: 'Ocorreu um erro ao fazer login.' };
   }
   
-  await createSession(userId);
   redirect('/');
 }
 

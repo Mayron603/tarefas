@@ -4,7 +4,7 @@ import 'server-only';
 import { cookies } from 'next/headers';
 import { SignJWT, jwtVerify } from 'jose';
 
-const secretKey = process.env.SESSION_SECRET;
+const secretKey = process.env.SESSION_SECRET || 'fallback-secret-for-development';
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function createSession(userId: string) {
@@ -38,6 +38,7 @@ export async function getSession() {
     return payload as { userId: string; iat: number; exp: number };
   } catch (error) {
     // This will be triggered if the token is invalid or expired
+    console.error('Failed to verify session:', error);
     return null;
   }
 }

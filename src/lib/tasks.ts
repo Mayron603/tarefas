@@ -12,10 +12,10 @@ async function getTasksCollection(): Promise<Collection<Omit<Task, 'id'>>> {
 // Get all tasks
 export async function getTasks(): Promise<Task[]> {
   const collection = await getTasksCollection();
-  const tasks = await collection.find({}).sort({ deadline: 1 }).toArray();
+  const tasksFromDb = await collection.find({}).sort({ deadline: 1 }).toArray();
   
   // Map MongoDB _id to a serializable string 'id'
-  return tasks.map((task) => {
+  return tasksFromDb.map((task) => {
     const { _id, ...rest } = task;
     return {
       ...rest,
