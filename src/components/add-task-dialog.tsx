@@ -30,9 +30,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { PlusCircle, Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { teamMembers } from '@/lib/mock-data';
+import { teamMembers } from '@/lib/team';
 import { useToast } from '@/hooks/use-toast';
 import { ptBR } from 'date-fns/locale';
+import { addTask } from '@/app/actions';
 
 const taskFormSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
@@ -54,15 +55,24 @@ export function AddTaskDialog() {
     },
   });
 
-  function onSubmit(data: TaskFormValues) {
-    console.log(data);
-    toast({
-      title: "Tarefa Criada",
-      description: "A nova tarefa foi adicionada ao quadro.",
-      className: "bg-accent text-accent-foreground border-0",
-    });
-    setOpen(false);
-    form.reset();
+  async function onSubmit(data: TaskFormValues) {
+    const result = await addTask(data);
+
+    if (result.success) {
+        toast({
+            title: "Tarefa Criada",
+            description: "A nova tarefa foi adicionada ao quadro.",
+            className: "bg-accent text-accent-foreground border-0",
+        });
+        setOpen(false);
+        form.reset({ priority: 'medium' });
+    } else {
+        toast({
+            title: "Erro ao criar tarefa",
+            description: result.error,
+            variant: "destructive",
+        });
+    }
   }
 
   return (
@@ -196,7 +206,9 @@ export function AddTaskDialog() {
             />
             <DialogFooter>
               <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Cancelar</Button>
-              <Button type="submit">Criar Tarefa</Button>
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? "Criando..." : "Criar Tarefa"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

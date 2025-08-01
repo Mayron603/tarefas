@@ -3,8 +3,10 @@
 import { Bar, BarChart, CartesianGrid, Pie, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, Cell, PieChart as RechartsPieChart } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ChartConfig, ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
-import { tasks } from '@/lib/mock-data';
-import { useMemo } from 'react';
+import { teamMembers } from '@/lib/team';
+import { Task } from '@/lib/types';
+import { useMemo, useState, useEffect } from 'react';
+import { fetchTasks } from '@/app/actions';
 
 const COLORS = {
   todo: 'hsl(var(--chart-4))',
@@ -39,6 +41,23 @@ const chartConfigMembers: ChartConfig = {
 
 
 export function OverviewCharts() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    async function loadTasks() {
+        const fetchedTasks = await fetchTasks();
+        const tasksWithAssignees = fetchedTasks.map(task => {
+            if (task.assigneeId) {
+                const assignee = teamMembers.find(m => m.id === task.assigneeId);
+                return { ...task, assignee };
+            }
+            return task;
+        });
+        setTasks(tasksWithAssignees);
+    }
+    loadTasks();
+  }, []);
+
   const statusData = useMemo(() => {
     const counts = tasks.reduce((acc, task) => {
       acc[task.status] = (acc[task.status] || 0) + 1;
@@ -49,7 +68,7 @@ export function OverviewCharts() {
       { status: 'inprogress', count: counts.inprogress || 0, fill: COLORS.inprogress },
       { status: 'done', count: counts.done || 0, fill: COLORS.done },
     ];
-  }, []);
+  }, [tasks]);
 
   const memberData = useMemo(() => {
       const counts = tasks.reduce((acc, task) => {
@@ -63,7 +82,7 @@ export function OverviewCharts() {
           name: name.split(' ')[0], // Use first name for brevity
           tasks: count,
       }));
-  }, []);
+  }, [tasks]);
 
   return (
     <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">

@@ -12,8 +12,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Wand2, Loader2, ArrowRight } from 'lucide-react';
-import { tasks as allTasks, teamMembers } from '@/lib/mock-data';
-import { getTaskDistributionSuggestions } from '@/app/actions';
+import { teamMembers } from '@/lib/team';
+import { getTaskDistributionSuggestions, fetchTasks } from '@/app/actions';
 import type { SuggestOptimalTaskDistributionOutput } from '@/ai/flows/suggest-optimal-task-distribution';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from './ui/badge';
@@ -28,6 +28,8 @@ export function AiSuggestionModal() {
   async function handleGetSuggestions() {
     setIsLoading(true);
     setSuggestions(null);
+
+    const allTasks = await fetchTasks();
     
     const unassignedTasks = allTasks
         .filter(t => t.status === 'todo')

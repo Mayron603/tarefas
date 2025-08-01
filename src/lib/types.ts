@@ -1,13 +1,17 @@
+import { ObjectId } from "mongodb";
+
 export type TaskStatus = 'todo' | 'inprogress' | 'done';
 
 export interface Task {
-  id: string;
+  _id: ObjectId;
+  id: string; // string representation of _id
   title: string;
   description?: string;
   status: TaskStatus;
   priority: 'low' | 'medium' | 'high';
   deadline: string; // ISO date string
   assignee?: TeamMember;
+  assigneeId?: string;
 }
 
 export interface TeamMember {
