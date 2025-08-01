@@ -12,8 +12,10 @@ import {
 import { SidebarNav } from "@/components/sidebar-nav";
 import { Header } from "@/components/header";
 import { useIsMobile } from "@/hooks/use-mobile";
+import type { User } from "@/lib/types";
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+
+export function AppShell({ children, user }: { children: React.ReactNode, user: User | null }) {
   const isMobile = useIsMobile();
   const [open, setOpen] = React.useState(true);
 
@@ -35,7 +37,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset className="bg-background">
-        <Header />
+        <Header user={user} />
         <main className="p-4 md:p-6">{children}</main>
       </SidebarInset>
     </SidebarProvider>

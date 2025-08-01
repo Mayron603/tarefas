@@ -3,7 +3,9 @@
 import { suggestOptimalTaskDistribution } from '@/ai/flows/suggest-optimal-task-distribution';
 import type { SuggestOptimalTaskDistributionInput } from '@/ai/flows/suggest-optimal-task-distribution';
 import { getTasks, addTask as addTaskToDb, completeTask as completeTaskInDb, updateTaskStatus as updateTaskStatusInDb, deleteTask as deleteTaskInDb } from '@/lib/tasks';
+import { getSession } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
+import { getUserById } from '@/lib/users';
 
 export async function getTaskDistributionSuggestions(
   input: SuggestOptimalTaskDistributionInput
@@ -18,8 +20,10 @@ export async function getTaskDistributionSuggestions(
 }
 
 export async function fetchTasks() {
-  const tasks = await getTasks();
-  return tasks;
+    const session = await getSession();
+    if (!session?.userId) return [];
+    const tasks = await getTasks(session.userId);
+    return tasks;
 }
 
 export async function addTask(data: {
@@ -29,6 +33,10 @@ export async function addTask(data: {
   priority: 'low' | 'medium' | 'high';
   assigneeName?: string;
 }) {
+  const session = await getSession();
+  if (!session?.userId) {
+    return { success: false, error: 'Usuário não autenticado.' };
+  }
 
   const task = {
     title: data.title,
@@ -36,6 +44,7 @@ export async function addTask(data: {
     deadline: data.deadline.toISOString(),
     priority: data.priority,
     assigneeName: data.assigneeName,
+    userId: session.userId,
   };
 
   try {
@@ -49,8 +58,12 @@ export async function addTask(data: {
 }
 
 export async function startTask(taskId: string) {
+    const session = await getSession();
+    if (!session?.userId) {
+        return { success: false, error: 'Usuário não autenticado.' };
+    }
     try {
-        await updateTaskStatusInDb(taskId, 'inprogress');
+        await updateTaskStatusInDb(taskId, 'inprogress', session.userId);
         revalidatePath('/');
         return { success: true };
     } catch (error) {
@@ -60,8 +73,12 @@ export async function startTask(taskId: string) {
 }
 
 export async function completeTask(taskId: string, resolution: string, proofImage?: string) {
+    const session = await getSession();
+    if (!session?.userId) {
+        return { success: false, error: 'Usuário não autenticado.' };
+    }
     try {
-        await completeTaskInDb(taskId, resolution, proofImage);
+        await completeTaskInDb(taskId, resolution, session.userId, proofImage);
         revalidatePath('/');
         return { success: true };
     } catch (error) {
@@ -71,12 +88,29 @@ export async function completeTask(taskId: string, resolution: string, proofImag
 }
 
 export async function deleteTask(taskId: string) {
+    const session = await getSession();
+    if (!session?.userId) {
+        return { success: false, error: 'Usuário não autenticado.' };
+    }
     try {
-        await deleteTaskInDb(taskId);
+        await deleteTaskInDb(taskId, session.userId);
         revalidatePath('/');
         return { success: true };
     } catch (error) {
         console.error(error);
         return { success: false, error: 'Falha ao excluir a tarefa.' };
+    }
+}
+
+export async function getUserData() {
+    const session = await getSession();
+    if (!session?.userId) return null;
+
+    try {
+        const user = await getUserById(session.userId);
+        return user;
+    } catch (error) {
+        console.error("Failed to fetch user data:", error);
+        return null;
     }
 }

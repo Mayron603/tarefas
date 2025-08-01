@@ -2,13 +2,13 @@
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Search, LogOut } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { AddTaskDialog } from "@/components/add-task-dialog";
-import { logout } from "@/app/auth/actions";
+import { UserNav } from "@/components/user-nav";
+import type { User } from "@/lib/types";
 
-
-export function Header() {
+export function Header({ user }: { user: User | null }) {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:h-16 sm:px-6">
       <SidebarTrigger className="md:hidden" />
@@ -24,12 +24,7 @@ export function Header() {
 
       <div className="flex flex-1 items-center justify-end gap-4">
         <AddTaskDialog />
-        <form action={logout}>
-          <Button type="submit" variant="outline" size="icon">
-              <LogOut className="h-5 w-5" />
-              <span className="sr-only">Sair</span>
-          </Button>
-        </form>
+        <UserNav user={user} />
       </div>
     </header>
   );
