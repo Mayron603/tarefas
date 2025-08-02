@@ -1,7 +1,8 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import { PT_Sans } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
 
 const ptSans = PT_Sans({
@@ -22,13 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={cn(
-          "min-h-screen bg-background font-body antialiased",
-          ptSans.variable
-      )}>
-        {children}
-        <Toaster />
-      </body>
+       <body className={cn("min-h-screen bg-background font-body antialiased", ptSans.variable)}>
+          <ThemeProvider>
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </body>
     </html>
   );
 }
