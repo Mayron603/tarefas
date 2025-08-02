@@ -4,13 +4,13 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { getSession } from '@/lib/session';
 
 const protectedRoutes = ['/'];
-const authRoutes = ['/login', '/register'];
+const authRoutes = ['/login', '/register', '/forgot-password', '/reset-password'];
 
 export async function middleware(request: NextRequest) {
   const session = await getSession();
   const { pathname } = request.nextUrl;
 
-  const isAuthRoute = authRoutes.includes(pathname);
+  const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
   const isProtectedRoute = protectedRoutes.includes(pathname);
 
   if (isAuthRoute && session) {
