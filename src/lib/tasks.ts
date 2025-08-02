@@ -31,7 +31,7 @@ export async function getTasks(userId: string): Promise<Task[]> {
 
 
 // Add a new task for a specific user
-export async function addTask(task: Omit<Task, "id" | "status" | "resolution" | "proofImage">): Promise<void> {
+export async function addTask(task: Omit<Task, "id" | "status" | "resolution" | "proofImage" | "completionDate">): Promise<void> {
   const collection = await getTasksCollection();
   await collection.insertOne({ ...task, status: 'todo' });
 }
@@ -50,7 +50,7 @@ export async function completeTask(taskId: string, resolution: string, userId: s
     const collection = await getTasksCollection();
     await collection.updateOne(
         { _id: new ObjectId(taskId), userId: userId },
-        { $set: { status: 'done', resolution: resolution, proofImage: proofImage } }
+        { $set: { status: 'done', resolution: resolution, proofImage: proofImage, completionDate: new Date().toISOString() } }
     );
 }
 

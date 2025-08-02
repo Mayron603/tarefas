@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ListTodo } from "lucide-react";
+import { ListTodo, PieChart } from "lucide-react";
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 
 export function SidebarNav() {
@@ -10,6 +10,7 @@ export function SidebarNav() {
 
   const menuItems = [
     { href: "/", label: "Quadro de Tarefas", icon: ListTodo },
+    { href: "/feedbacks", label: "Feedbacks", icon: PieChart },
   ];
 
   return (

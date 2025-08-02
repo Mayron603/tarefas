@@ -53,6 +53,7 @@ export async function addTask(data: {
 
     await addTaskToDb(task);
     revalidatePath('/');
+    revalidatePath('/feedbacks');
     return { success: true };
   } catch (error) {
     console.error(error);
@@ -68,6 +69,7 @@ export async function startTask(taskId: string) {
     try {
         await updateTaskStatusInDb(taskId, 'inprogress', session.userId);
         revalidatePath('/');
+        revalidatePath('/feedbacks');
         return { success: true };
     } catch (error) {
         console.error(error);
@@ -83,6 +85,7 @@ export async function completeTask(taskId: string, resolution: string, proofImag
     try {
         await completeTaskInDb(taskId, resolution, session.userId, proofImage);
         revalidatePath('/');
+        revalidatePath('/feedbacks');
         return { success: true };
     } catch (error) {
         console.error(error);
@@ -98,6 +101,7 @@ export async function deleteTask(taskId: string) {
     try {
         await deleteTaskInDb(taskId, session.userId);
         revalidatePath('/');
+        revalidatePath('/feedbacks');
         return { success: true };
     } catch (error) {
         console.error(error);

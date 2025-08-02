@@ -10,6 +10,7 @@ export interface Task {
   status: TaskStatus;
   priority: 'low' | 'medium' | 'high';
   deadline: string; // ISO date string
+  completionDate?: string; // ISO date string, set when task is completed
   resolution?: string; // Text added when the task is marked as done
   assigneeName?: string;
   proofImage?: string; // Data URI of the uploaded image
