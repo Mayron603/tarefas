@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { PT_Sans } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -22,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
-       <body className={cn("min-h-screen bg-background font-body antialiased", ptSans.variable)}>
+    <html lang="pt-BR" className={ptSans.variable} suppressHydrationWarning>
+       <body className={cn("min-h-screen bg-background font-body antialiased")}>
           <ThemeProvider>
             {children}
             <Toaster />
