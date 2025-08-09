@@ -3,7 +3,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getSession } from '@/lib/session';
 
-const protectedRoutes = ['/', '/feedbacks'];
+const protectedRoutes = ['/', '/feedbacks', '/tasks'];
 const authRoutes = ['/login', '/register', '/forgot-password', '/reset-password'];
 
 export async function middleware(request: NextRequest) {
@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
-  const isProtectedRoute = protectedRoutes.includes(pathname);
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
 
   if (isAuthRoute && session) {
     return NextResponse.redirect(new URL('/', request.url));
