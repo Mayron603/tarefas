@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -13,6 +14,7 @@ import { SidebarNav } from "@/components/sidebar-nav";
 import { Header } from "@/components/header";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { User } from "@/lib/types";
+import { PandaIcon } from "./panda-icon";
 
 
 export function AppShell({ children, user }: { children: React.ReactNode, user: User | null }) {
@@ -27,7 +29,10 @@ export function AppShell({ children, user }: { children: React.ReactNode, user: 
     <SidebarProvider open={open} onOpenChange={setOpen}>
       <Sidebar>
         <SidebarHeader>
-          <h1 className="text-2xl font-bold text-primary font-headline pl-2">FluxoDeTrabalho</h1>
+          <div className="flex items-center gap-2 pl-2">
+            <PandaIcon className="h-8 w-8 text-accent" />
+            <h1 className="text-2xl font-bold text-primary font-headline">PandaTask</h1>
+          </div>
         </SidebarHeader>
         <SidebarContent>
           <SidebarNav />

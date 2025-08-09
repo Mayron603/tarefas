@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useActionState } from "react";
@@ -7,10 +8,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { GanttChartSquare, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useFormStatus } from "react-dom";
+import { PandaIcon } from "@/components/panda-icon";
 
 export default function LoginPage() {
     const [state, formAction] = useActionState(login, null);
@@ -32,7 +34,7 @@ export default function LoginPage() {
             <Card className="mx-auto max-w-sm w-full">
                 <CardHeader className="space-y-1 text-center">
                     <div className="inline-block mx-auto">
-                     <GanttChartSquare className="h-8 w-8 text-primary" />
+                     <PandaIcon className="h-10 w-10 text-accent" />
                     </div>
                     <CardTitle className="text-2xl font-bold font-headline">Bem-vindo de volta!</CardTitle>
                     <CardDescription>Insira suas credenciais para acessar seu quadro</CardDescription>
